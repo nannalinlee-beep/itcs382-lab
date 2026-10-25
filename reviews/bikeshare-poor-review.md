@@ -3,7 +3,7 @@
 - Date: 25 October 2026
 - AI tool and model: Claude Code in the Claude desktop app, model Claude Opus 5.5 (`claude-opus-5-5`)
 - How the AI read the files: it opened the Java file in the folder bikeshare-poor/src/main/java/bikeshare
-- Prompt: Prompt A from prompts.md, with `<folder>` replaced by `bikeshare-poor`, in a new chat
+- Prompt: Prompt A from prompts.md, with `<folder>` replaced by `bikeshare-poor`. Run in the same Claude Code session that wrote the code, not in a new chat
 
 ---
 
