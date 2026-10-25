@@ -7,13 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParcelService {
+    private static final int FREE_DAYS = 3;
+
     private List<Locker> lockers = new ArrayList<>();
     private List<Parcel> parcels = new ArrayList<>();
 
     public ParcelService() {
-        lockers.add(new Locker(1, 1));
-        lockers.add(new Locker(2, 2));
-        lockers.add(new Locker(3, 3));
+        lockers.add(new Locker(1, ParcelSize.SMALL));
+        lockers.add(new Locker(2, ParcelSize.MEDIUM));
+        lockers.add(new Locker(3, ParcelSize.LARGE));
     }
 
     public long countFreeLockers() {
@@ -22,7 +24,7 @@ public class ParcelService {
 
     public Locker storeParcel(Parcel parcel) {
         for (Locker locker : lockers) {
-            if (locker.isFree() && locker.getSize() >= parcel.getSize()) {
+            if (locker.isFree() && parcel.getSize().fitsIn(locker.getSize())) {
                 locker.setParcel(parcel);
                 parcel.status = "STORED";
                 parcels.add(parcel);
@@ -47,15 +49,10 @@ public class ParcelService {
     }
 
     public double fee(Parcel parcel, int days) {
-        if (days <= 3) {
+        if (days <= FREE_DAYS) {
             return 0;
         }
-        if (parcel.getSize() == 1) {
-            return (days - 3) * 10.0;
-        } else if (parcel.getSize() == 2) {
-            return (days - 3) * 15.0;
-        }
-        return (days - 3) * 20.0;
+        return (days - FREE_DAYS) * parcel.getSize().getDailyFee();
     }
 
     public List<Parcel> getAllParcels() {
