@@ -16,8 +16,8 @@ public class ParcelService {
         lockers.add(new Locker(3, 3));
     }
 
-    public List<Locker> getLockers() {
-        return lockers;
+    public long countFreeLockers() {
+        return lockers.stream().filter(Locker::isFree).count();
     }
 
     public Locker storeParcel(Parcel parcel) {
@@ -26,8 +26,6 @@ public class ParcelService {
                 locker.setParcel(parcel);
                 parcel.status = "STORED";
                 parcels.add(parcel);
-                System.out.println("SMS to " + parcel.getStudentId() + ": parcel "
-                        + parcel.getCode() + " is in locker " + locker.getNumber());
                 saveToFile();
                 return locker;
             }
@@ -60,14 +58,12 @@ public class ParcelService {
         return (days - 3) * 20.0;
     }
 
-    public void printParcels(boolean forStaff) {
-        for (Parcel parcel : parcels) {
-            if (forStaff) {
-                System.out.println(parcel.getCode() + " " + parcel.getStudentId() + " " + parcel.status);
-            } else if (parcel.status.equals("STORED")) {
-                System.out.println(parcel.getCode() + " is waiting");
-            }
-        }
+    public List<Parcel> getAllParcels() {
+        return List.copyOf(parcels);
+    }
+
+    public List<Parcel> getWaitingParcels() {
+        return parcels.stream().filter(parcel -> parcel.status.equals("STORED")).toList();
     }
 
     private void saveToFile() {

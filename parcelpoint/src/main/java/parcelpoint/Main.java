@@ -12,14 +12,24 @@ public class Main {
             if (words[0].equals("store")) {
                 Parcel parcel = new Parcel(words[1], words[2], Integer.parseInt(words[3]));
                 Locker locker = service.storeParcel(parcel);
-                System.out.println(locker == null ? "No free locker" : "Locker " + locker.getNumber());
+                if (locker == null) {
+                    System.out.println("No free locker");
+                } else {
+                    System.out.println("SMS to " + parcel.getStudentId() + ": parcel "
+                            + parcel.getCode() + " is in locker " + locker.getNumber());
+                    System.out.println("Locker " + locker.getNumber());
+                }
             } else if (words[0].equals("pickup")) {
                 System.out.println("Fee: " + service.pickUp(words[1], Integer.parseInt(words[2])));
             } else if (words[0].equals("list")) {
-                service.printParcels(false);
+                for (Parcel parcel : service.getWaitingParcels()) {
+                    System.out.println(parcel.getCode() + " is waiting");
+                }
             } else if (words[0].equals("staff")) {
-                service.printParcels(true);
-                System.out.println("Free lockers: " + service.getLockers().stream().filter(Locker::isFree).count());
+                for (Parcel parcel : service.getAllParcels()) {
+                    System.out.println(parcel.getCode() + " " + parcel.getStudentId() + " " + parcel.status);
+                }
+                System.out.println("Free lockers: " + service.countFreeLockers());
             } else if (words[0].equals("quit")) {
                 break;
             }
