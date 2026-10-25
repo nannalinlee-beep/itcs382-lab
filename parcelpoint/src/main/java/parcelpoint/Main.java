@@ -27,7 +27,7 @@ public class Main {
                 }
             } else if (words[0].equals("staff")) {
                 for (Parcel parcel : service.getAllParcels()) {
-                    System.out.println(parcel.getCode() + " " + parcel.getStudentId() + " " + parcel.status);
+                    System.out.println(parcel.getCode() + " " + parcel.getStudentId() + " " + parcel.getStatus());
                 }
                 System.out.println("Free lockers: " + service.countFreeLockers());
             } else if (words[0].equals("quit")) {

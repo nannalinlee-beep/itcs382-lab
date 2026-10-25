@@ -26,7 +26,7 @@ public class ParcelService {
         for (Locker locker : lockers) {
             if (locker.isFree() && parcel.getSize().fitsIn(locker.getSize())) {
                 locker.setParcel(parcel);
-                parcel.status = "STORED";
+                parcel.markStored();
                 parcels.add(parcel);
                 saveToFile();
                 return locker;
@@ -40,7 +40,7 @@ public class ParcelService {
             Parcel parcel = locker.getParcel();
             if (parcel != null && parcel.getCode().equals(code)) {
                 locker.setParcel(null);
-                parcel.status = "PICKED_UP";
+                parcel.markPickedUp();
                 saveToFile();
                 return fee(parcel, days);
             }
@@ -60,13 +60,13 @@ public class ParcelService {
     }
 
     public List<Parcel> getWaitingParcels() {
-        return parcels.stream().filter(parcel -> parcel.status.equals("STORED")).toList();
+        return parcels.stream().filter(parcel -> parcel.getStatus() == ParcelStatus.STORED).toList();
     }
 
     private void saveToFile() {
         try (FileWriter writer = new FileWriter("parcels.csv")) {
             for (Parcel parcel : parcels) {
-                writer.write(parcel.getCode() + "," + parcel.status + "\n");
+                writer.write(parcel.getCode() + "," + parcel.getStatus() + "\n");
             }
         } catch (IOException e) {
             throw new UncheckedIOException("Could not save parcels.csv", e);
