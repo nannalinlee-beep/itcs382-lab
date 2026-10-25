@@ -2,7 +2,7 @@
 
 - Date: 25 October 2026
 - AI tool and model: Claude Code in the Claude desktop app, model Claude Opus 5.5 (`claude-opus-5-5`)
-- Commit reviewed: 2e0e530 (Starter code)
+- Commit reviewed: 19d7833 (Starter code)
 - How the AI read the files: it opened the four Java files in the folder parcelpoint/src/main/java/parcelpoint
 - Prompt: Prompt A from prompts.md, with `<folder>` replaced by `parcelpoint`
 
